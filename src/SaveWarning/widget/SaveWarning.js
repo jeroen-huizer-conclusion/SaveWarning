@@ -8,7 +8,6 @@ define([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/on"
-
     ], 
     function (declare, _WidgetBase, dom, lang, Arr, domConstruct, style, on) {
     "use strict";
@@ -17,44 +16,30 @@ define([
     return declare("SaveWarning.widget.SaveWarning", [_WidgetBase], {
 
         //Widget variables
-        inputAttribute: null,       
-        entity: '',                 // entityname
-        parent: '',                 // association to parent
+        header: "Warning",
+        message: "There are unsaved changes.",
+        buttons: [{
+            buttonCaption: "OK",
+            action: "nothing",
+            customAction: "",   // microflowname
+            buttonStyle: ""     // Bootstrap styles
+        }],
 
         //Local variable
-        _contextObj: null,          // the context
+        _contextObj: null,
         _attributes: [],
-        // _originalValues: [],
-
-        postCreate: function () {
-            logger.debug(this.id + ".postCreate"); 
-            this._originalValues = {};
-        },
 
         update: function (obj, callback) {
-            
             if(obj){
                 this._contextObj = obj;
                 this._attributes = obj.getAttributes();
-
-                // Arr.forEach(this._attributes, function(attribute){
-                //     this._originalValues[attribute] = this._contextObj.get(attribute);
-                // }, this)
-
-                this._resetSubscriptions();
             }
-
             callback && callback();
         },
 
         uninitialize: function(){
-
-            this._changed = Arr.some(this._attributes, this._hasChanged ,this);
-
-            if(this._changed){
+            if(Arr.some(this._attributes, this._hasChanged ,this)){
                 this._showAlert();
-            } else{
-                this._resetSubscriptions();
             }
         },
 
@@ -81,13 +66,8 @@ define([
             return valA !== valB;
         },
 
-        _resetSubscriptions: function () {
-            logger.debug(this.id + "._resetSubscriptions");
-            this.unsubscribeAll();
-        },
-
         _showAlert: function(){
-            // Put this in a template
+            // Most of this stuff should be in a template or someting.
 
             var body = this.ownerDocument.body;
 
@@ -105,19 +85,17 @@ define([
             domConstruct.create("h4", {innerHTML: this.header}, modalHeader);
             domConstruct.create("p", {innerHTML: this.message}, modalBody);
 
-            Arr.forEach(this.buttons, function(butDef){
+            Arr.forEach(this.buttons, function(def){
 
-                var button = domConstruct.create("button", 
-                                    {   class: "btn btn-"+butDef.buttonStyle, 
-                                        innerHTML: butDef.buttonCaption}, modalFooter);
+                var button = domConstruct.create("button", {class: "btn btn-"+def.buttonStyle, innerHTML: def.buttonCaption}, modalFooter);
 
-                if(butDef.action == "commit"){
+                if(def.action == "commit"){
                     on(button, "click", lang.hitch(this, this._commit));
-                } else if(butDef.action == "rollback"){
+                } else if(def.action == "rollback"){
                     on(button, "click", lang.hitch(this, this._rollback));
-                } else if(butDef.action == "custom"){
-                    on(button, "click", lang.hitch(this, this._custom, butDef.customAction));
-                } else if(butDef.action == "back"){
+                } else if(def.action == "custom"){
+                    on(button, "click", lang.hitch(this, this._custom, def.customAction));
+                } else if(def.action == "back"){
                     on(button, "click", lang.hitch(this, this._navigateBack));
                 }
             }, this);
@@ -128,7 +106,7 @@ define([
 
             style.set(modal, "left", left +"px");
             style.set(modal, "top", top+"px");
-            style.set(modal, "visibility", "visible");
+            style.set(modal, "visibility", "visible"); // So we don't see it move..
 
             // Store for later reference
             this._modal = modal;
@@ -140,7 +118,7 @@ define([
                     mxobj: this._contextObj,
                     callback: lang.hitch(this, this._closePopUp),
                     error: lang.hitch(this, this._showError),
-                    onValidation: lang.hitch(this, this._handleValidation)
+                    onValidation: lang.hitch(this, this._navigateBack) // Mendix will throw validation messages anyay.
                 });            
         },
 
@@ -158,6 +136,7 @@ define([
         },
 
         _custom: function(microflow){
+            // Microflow has no idea where call comes from.. (this.mxform)
             mx.data.action({
                     params: {
                         applyto: "selection",
@@ -169,32 +148,18 @@ define([
                 }, this);
         },
 
-        _closePopUp: function(){
-            // Anything to release? Don't think so..
-            if(this._modal){
-                this._modal.remove();
-                this._overlay.remove();
-            }
-        },
-
         _showError: function(err){
             this._closePopUp();
             if(err.message.indexOf("validation") === -1) // Validation errors are handled elsewhere
                 mx.ui.error(err.message, true);
         },
 
-        _handleValidation: function(validations) {           
-            this._navigateBack(); // Go back to the form that we tried to commit
-
-            // Mendix throws a similar error by itself ???
-            // var val = validations[0];
-            // Arr.forEach(this._attributes, function(attribute){
-            //     var msg = val.getReasonByAttribute(this._refAttribute);
-            //     if (msg) {
-            //         mx.ui.error(msg, true);
-            //         val.removeAttribute(this._refAttribute);
-            //     }
-            // }, this);
+        _closePopUp: function(){
+            // Anything to release? Don't think so..
+            if(this._modal){
+                this._modal.remove();
+                this._overlay.remove();
+            }
         }
     })
 });
