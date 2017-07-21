@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="SaveWarning.widget.SaveWarning" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ widget.xsd">
+    <name>SaveWarning</name>
+    <description>Show a warning when there are unsaved changes.</description>
+    <icon></icon>
+    <properties>
+
+        <property key="message" type="string" defaultValue="There are unsaved changes." required="false">
+            <caption>Warning message</caption>
+            <category>Basic</category>
+            <description>Message to show</description>
+        </property>
+
+    </properties>
+</widget>
