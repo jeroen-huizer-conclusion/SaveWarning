@@ -5,11 +5,67 @@
     <icon></icon>
     <properties>
 
-        <property key="message" type="string" defaultValue="There are unsaved changes." required="false">
+        <property key="header" type="string" defaultValue="Warning" required="true">
+            <caption>Warning header</caption>
+            <category>Basic</category>
+            <description>Header of the popup</description>
+        </property>
+
+        <property key="message" type="string" defaultValue="There are unsaved changes." required="true">
             <caption>Warning message</caption>
             <category>Basic</category>
             <description>Message to show</description>
         </property>
 
+         <property key="buttons" type="object" isList="true" required="true">
+            <caption>Buttons</caption>
+            <category>Basic</category>
+            <description>Define buttons that are shown.</description>
+
+            <properties>
+                <property key="buttonCaption" type="string" required="true" defaultValue="OK">
+                    <caption>Caption</caption>
+                    <category>Common</category>
+                    <description>Button caption</description>
+                </property>
+
+                <property key="action" type="enumeration" defaultValue="nothing" required="true">
+                    <caption>Action</caption>
+                    <category>Common</category>
+                    <description>Which action should the button trigger? Note, each action will close the popup.</description>
+                    <enumerationValues>
+                        <enumerationValue key="nothing">Nothing</enumerationValue>
+                        <enumerationValue key="commit">Commit</enumerationValue>
+                        <enumerationValue key="rollback">Rollback</enumerationValue>
+                        <enumerationValue key="custom">Microflow</enumerationValue>
+                        <enumerationValue key="back">Go back</enumerationValue>
+                    </enumerationValues>
+                </property>
+
+        
+                <property key="customAction" type="microflow" required="false" >
+                    <caption>Microflow</caption>
+                    <category>Common</category>
+                    <description>Required if action == Microflow. Will receive the contextobject, does not expect return value.</description>
+                    <returnType type="Void"/>
+                </property>
+
+                <property key="buttonStyle" type="enumeration" defaultValue="default">
+                    <caption>Button style</caption>
+                    <category>Common</category>
+                    <description></description>
+                    <enumerationValues>
+                        <enumerationValue key="default">Default</enumerationValue>
+                        <enumerationValue key="inverse">Inverse</enumerationValue>
+                        <enumerationValue key="primary">Primary</enumerationValue>
+                        <enumerationValue key="info">Info</enumerationValue>
+                        <enumerationValue key="success">Success</enumerationValue>
+                        <enumerationValue key="warning">Warning</enumerationValue>
+                        <enumerationValue key="danger">Danger</enumerationValue>
+                    </enumerationValues>
+                </property>
+
+            </properties>
+        </property>
     </properties>
 </widget>
