@@ -157,8 +157,8 @@ define([
         _closePopUp: function(){
             // Anything to release? Don't think so..
             if(this._modal){
-                this._modal.remove();
-                this._overlay.remove();
+                domConstruct.destroy(this._modal);
+                domConstruct.destroy(this._overlay);
             }
         }
     })
