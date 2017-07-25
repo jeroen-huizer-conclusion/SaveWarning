@@ -24,4 +24,5 @@ Present the user with some options, e.g. commit, rollback, continue.
 Add the .mpk in dist to your project.
 Add the widget to a dataview and follow the configuration steps.
 
+## Attribution
 - Icon made [PAO Media](https://www.iconfinder.com/paomedia), licensed under [CC 3.0 BY](https://creativecommons.org/licenses/by/3.0/legalcode)
