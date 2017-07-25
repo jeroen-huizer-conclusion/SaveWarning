@@ -2,7 +2,7 @@
 <widget id="SaveWarning.widget.SaveWarning" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ widget.xsd">
     <name>SaveWarning</name>
     <description>Show a warning when there are unsaved changes.</description>
-    <icon></icon>
+    <icon>iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABn0lEQVRIS2NkoDFgpLH5DPS1wGz6ncD/jH9n/GdgEvv64h7D4QILhouXr6F4Ul9XC8PTthNOMHCLKzWeyVRtQJdE8YHpjJsvQYaDFMEsWLl1K4qecG9v7BZIKDEw/GfAsATFApMZt//DdJNlAUgzmiV4LdiUZsxw9vwphrcfPoDtFREUZHC2skLxwftvvxn8Zp1l4Ab5AArOZKjCzcVpwbdXDxmsFfgZSp0VGIS42bAmNpDhnbvvMRx7+ImBS0yeNAv+/vzK8OPjGwaGf3/xpmRGJmYGNn5RBhZ2LtIsoCR/EBVEoxbAQgBnKrKWYWfIM+Vl4GdnwhtaH3/+Y5hw6jPD8ac/SYvklYEiBA2Hmfjhxz+GiA1vSLNgRwS4xMAoi9C9AyubPFa8Is8CYlMT2Ragl6YU+cB42o3/oJwJArAgItUH///9ZTibpYG9LNJpP/SRg1+Mj4GJmSwLQIZ///T6w7UKW0GsyVSrcYf/v///ZzEyMIlNceYj1vFgdTl7PzH8/f/3JRMTc+qNevfNWC0gyUQiFdO3TibSUSQpAwCmS8gZ2n+f5AAAAABJRU5ErkJggg==</icon>
     <properties>
 
         <property key="header" type="string" defaultValue="Warning" required="true">
