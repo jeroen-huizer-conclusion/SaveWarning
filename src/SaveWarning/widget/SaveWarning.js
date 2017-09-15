@@ -1,3 +1,6 @@
+/* global define, require, mx*/ 
+"use strict";
+
 define([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
@@ -10,7 +13,6 @@ define([
     "dojo/on"
     ], 
     function (declare, _WidgetBase, dom, lang, Arr, domConstruct, style, on) {
-    "use strict";
 
     // Declare widget"s prototype.
     return declare("SaveWarning.widget.SaveWarning", [_WidgetBase], {
@@ -34,7 +36,9 @@ define([
                 this._contextObj = obj;
                 this._attributes = obj.getAttributes();
             }
-            callback && callback();
+            if(callback){
+                callback();
+            }
         },
 
         uninitialize: function(){
@@ -47,7 +51,7 @@ define([
             var valA = this._contextObj.get(attribute);
             var valB = this._contextObj.getOriginalValue(attribute);
 
-            var typeA = typeof valA
+            var typeA = typeof valA;
             var typeB = typeof valB;
 
             if(typeA !== typeB)
@@ -55,13 +59,11 @@ define([
 
             if(lang.isArray(typeA) && lang.isArray(typeB)){
                 // Does not work with arrays of non-primitives
-                return (valA.length !== valB.length) &&
-                    Arr.some(typeA, function(el){return valB.indexOf(el) < 0}) 
+                return (valA.length !== valB.length) && Arr.some(typeA, function(el){return valB.indexOf(el) < 0;});
             }
 
             if(typeA === "object")
-                return (typeof valA.valueOf === "function" && typeof valB.valueOf === "function") 
-                    && valA.valueOf() !== valB.valueOf();
+                return (typeof valA.valueOf === "function" && typeof valB.valueOf === "function") && valA.valueOf() !== valB.valueOf();
 
             return valA !== valB;
         },
@@ -72,7 +74,7 @@ define([
             var body = this.ownerDocument.body;
 
             var modal = domConstruct.create("div", {class: "modal-dialog mx-dialog", style: "z-index : 1002; visibility: hidden"}, body);
-            var modalContent = domConstruct.create("div", {class: "modal-content mx-dialog-content"}, modal)
+            var modalContent = domConstruct.create("div", {class: "modal-content mx-dialog-content"}, modal);
             var modalHeader = domConstruct.create("div", {class: "modal-header mx-dialog-header"}, modalContent);
             var modalBody = domConstruct.create("div", {class: "modal-body mx-dialog-body"}, modalContent);
             var modalFooter = domConstruct.create("div", {class: "modal-footer mx-dialog-footer"}, modalContent);
@@ -161,7 +163,7 @@ define([
                 domConstruct.destroy(this._overlay);
             }
         }
-    })
+    });
 });
 
 require(["SaveWarning/widget/SaveWarning"]);
