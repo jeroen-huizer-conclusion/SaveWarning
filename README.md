@@ -1,18 +1,28 @@
-Save warning
-=============
+# Save warning
 
 ## Description
-Show a warning to the user when navigating away without committing changes.
-Present the user with some options, e.g. commit, rollback, continue.
+Users can easily navigate away from a page without committing their changes.
+Though this is not wrong perse, it is not always intuitive to users and it can lead to loss of data.
+
+This widget checks the object on the page when the user navigates away. 
+If there are any changes it will present a warning to the user.
+The warning message and the subsequent options available to the user are customizable.
+For example: you can allow the user to commit or rollback from the popup or trigger some custom microflow.
 
 ## Features:
-- Show a message when the user has changes.
+- Show a message (blocking) when there are changes to the contextobject when leaving the page
 - Does not show anything if there are no changes
-- No need for custom logic
-- Define your own action buttons (commit, rollback, microflow, navigate back, do nothing)
+- No need for custom logic to check for changes.
+- Define your own action buttons
+	-	commit
+	-	rollback
+	-	microflow
+	-	navigate back
+	-	do nothing
 
 ## Limitations
-- Validation messages and commit errors are a bit tricky.
+- Widget only tracks changes to the contextobject and not to any referenced objects.
+- When committing from the popup, it is not possible to show validation messages.
 - 'Go back' does not work  in popup windows
 
 ## Dependencies
