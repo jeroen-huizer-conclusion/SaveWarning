@@ -27,7 +27,7 @@ For example: you can allow the user to commit or rollback from the popup or trig
 
 ## Dependencies
 
-- [Mendix 6.x or higher](https://appstore.mendix.com/)
+- [Mendix 7.x or higher](https://appstore.mendix.com/)
 
 ## Configuration
 
