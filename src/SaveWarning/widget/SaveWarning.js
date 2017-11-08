@@ -1,4 +1,4 @@
-/* global define, require, mx*/ 
+/* global define, require, mx*/
 "use strict";
 
 define([
@@ -11,7 +11,7 @@ define([
     "dojo/dom-construct",
     "dojo/dom-style",
     "dojo/on"
-    ], 
+    ],
     function (declare, _WidgetBase, dom, lang, Arr, domConstruct, style, on) {
 
     // Declare widget"s prototype.
@@ -32,7 +32,14 @@ define([
         _attributes: [],
 
         update: function (obj, callback) {
+            // Reset to the new
             if(obj){
+                // Contextobject switched in current window
+                if(this._contextObj && this._contextObj.getGuid() != obj.getGuid()){
+                    if(Arr.some(this._attributes, this._hasChanged ,this)){
+                        this._showAlert();
+                    }
+                }
                 this._contextObj = obj;
                 this._attributes = obj.getAttributes();
             }
@@ -83,7 +90,7 @@ define([
             Arr.forEach(["n", "e", "s", "w", "ne", "se", "sw", "nw"], function(pos){
                 domConstruct.create("div", {class: "mx-resizer mx-resizer-"+pos, "data-resize-dir": pos, style:"user-select: none;"}, modal);
             });
-            
+
             domConstruct.create("h4", {innerHTML: this.header}, modalHeader);
             domConstruct.create("p", {innerHTML: this.message}, modalBody);
 
@@ -92,11 +99,11 @@ define([
                 var button = domConstruct.create("button", {class: "btn btn-"+def.buttonStyle, innerHTML: def.buttonCaption}, modalFooter);
 
                 if(def.action == "commit"){
-                    on(button, "click", lang.hitch(this, this._commit));
+                    on(button, "click", lang.hitch(this, this._commit, this._contextObj));
                 } else if(def.action == "rollback"){
-                    on(button, "click", lang.hitch(this, this._rollback));
+                    on(button, "click", lang.hitch(this, this._rollback, this._contextObj));
                 } else if(def.action == "custom"){
-                    on(button, "click", lang.hitch(this, this._custom, def.customAction));
+                    on(button, "click", lang.hitch(this, this._custom, def.customAction, this._contextObj));
                 } else if(def.action == "back"){
                     on(button, "click", lang.hitch(this, this._navigateBack));
                 }
@@ -115,18 +122,18 @@ define([
             this._overlay = overlay;
         },
 
-        _commit: function(){
+        _commit: function(obj){
             mx.data.commit({
-                    mxobj: this._contextObj,
+                    mxobj: obj,
                     callback: lang.hitch(this, this._closePopUp),
                     error: lang.hitch(this, this._showError),
                     onValidation: lang.hitch(this, this._navigateBack) // Mendix will throw validation messages anyay.
-                });            
+                });
         },
 
-        _rollback: function(){
+        _rollback: function(obj){
             mx.data.rollback({
-                mxobj: this._contextObj,
+                mxobj: obj,
                 callback: lang.hitch(this, this._closePopUp),
                 error: lang.hitch(this, this._showError)
             });
@@ -137,13 +144,13 @@ define([
             mx.ui.back(); // Can be annoying when you current page is same as previous page
         },
 
-        _custom: function(microflow){
+        _custom: function(microflow, obj){
             // Microflow has no idea where call comes from.. (this.mxform)
             mx.data.action({
                     params: {
                         applyto: "selection",
                         actionname: microflow,
-                        guids: [this._contextObj.getGuid()]
+                        guids: [obj.getGuid()]
                     },
                     callback: lang.hitch(this, this._closePopUp),
                     error:  lang.hitch(this, this._showError)
