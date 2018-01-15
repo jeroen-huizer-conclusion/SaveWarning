@@ -106,6 +106,8 @@ define([
                     on(button, "click", lang.hitch(this, this._custom, def.customAction, this._contextObj));
                 } else if(def.action == "back"){
                     on(button, "click", lang.hitch(this, this._navigateBack));
+                } else if(def.action == "nothing"){
+                    on(button, "click", lang.hitch(this, this._closePopUp));
                 }
             }, this);
 
