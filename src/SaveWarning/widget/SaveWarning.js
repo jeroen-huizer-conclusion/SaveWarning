@@ -69,7 +69,7 @@ define([
                 return (valA.length !== valB.length) && Arr.some(typeA, function(el){return valB.indexOf(el) < 0;});
             }
 
-            if(typeA === "object")
+            if(typeA === "object" && valA !== null)
                 return (typeof valA.valueOf === "function" && typeof valB.valueOf === "function") && valA.valueOf() !== valB.valueOf();
 
             return valA !== valB;
