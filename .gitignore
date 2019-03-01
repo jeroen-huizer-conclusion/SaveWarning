@@ -19,3 +19,4 @@ out/
 dist/
 !test/deployment/widgets/*.mpk
 !test/**/*.mpr
+package-lock.json
