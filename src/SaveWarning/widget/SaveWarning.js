@@ -30,6 +30,7 @@ define([
         //Local variable
         _contextObj: null,
         _attributes: [],
+        _currentForm: {path: "", location:""},
 
         update: function (obj, callback) {
             // Reset to the new
@@ -42,6 +43,7 @@ define([
                 }
                 this._contextObj = obj;
                 this._attributes = obj.getAttributes();
+                this._currentForm = {path: this.mxform.path, location: this.mxform.place};
             }
             if(callback){
                 callback();
@@ -105,7 +107,7 @@ define([
                 } else if(def.action == "custom"){
                     on(button, "click", lang.hitch(this, this._custom, def.customAction, this._contextObj));
                 } else if(def.action == "back"){
-                    on(button, "click", lang.hitch(this, this._navigateBack));
+                    on(button, "click", lang.hitch(this, this._navigateBack, this._contextObj, this._currentForm));
                 } else if(def.action == "nothing"){
                     on(button, "click", lang.hitch(this, this._closePopUp));
                 }
@@ -141,9 +143,19 @@ define([
             });
         },
 
-        _navigateBack: function(){
+        _navigateBack: function(obj, form){
             this._closePopUp();
-            mx.ui.back(); // Can be annoying when you current page is same as previous page
+            //mx.ui.back(); // Can be annoying when you current page is same as previous page
+
+            var context= new mendix.lib.MxContext();
+            context.setContext(obj.getEntity(), obj.getGuid());
+
+            // Handle any errors? What to do on callback?
+            mx.ui.openForm(form.path, {
+                    location: form.location,
+                    context: context,
+                    callback: null
+            });
         },
 
         _custom: function(microflow, obj){
