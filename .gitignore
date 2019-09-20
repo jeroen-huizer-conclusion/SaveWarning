@@ -17,6 +17,7 @@ node_modules/
 *DS_Store*
 out/
 dist/
-!test/deployment/widgets/*.mpk
+!test/deployment/widgets/**
+test/widgets/**
 !test/**/*.mpr
 package-lock.json
